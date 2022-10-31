@@ -8,14 +8,11 @@ import Page from "./Page";
 
 class LoginForm extends Page {
 	constructor(props) {
-		super(props);
+		super(props, false);
 		this.state = {
 			...this.state,
 			username: '',
 			password: '',
-		}
-		if (this.state.isLoggedIn) {
-			window.location.href = '/dashboard';
 		}
 	}
 

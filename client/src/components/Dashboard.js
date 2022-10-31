@@ -6,10 +6,7 @@ import axios from 'axios';
 
 class Dashboard extends Page {
 	constructor(props) {
-		super(props)
-		if (!this.state.isLoggedIn) {
-			window.location.href = '/login';
-		}
+		super(props, true);
 	}
 
 	logOut = () => {
@@ -19,6 +16,10 @@ class Dashboard extends Page {
 
 	gotoMathGame = () => {
 		window.location.href = './math-game';
+	}
+
+	gotoScoreboards = () => {
+		window.location.href = './scoreboard';
 	}
 
 	deleteAccount = () => {
@@ -34,9 +35,9 @@ class Dashboard extends Page {
 					username: username,
 				}
 			}).then(response => {
-				const data = response.data;
+				const data = response.data.data.data[0];
 				if (response.status === JsonResponseCodes.ok) {
-					this.setState({ score: data[0].score });
+					this.setState({ score: data.score });
 					let localState = {
 						isLoggedIn: this.state.isLoggedIn,
 						userData: this.state.userData,
@@ -44,7 +45,6 @@ class Dashboard extends Page {
 						score: this.state.score
 					}
 					window.localStorage.setItem('state', JSON.stringify(localState));
-					window.location.href = '/dashboard';
 				}
 			}).catch(error => {
 				console.log(error);
@@ -56,13 +56,19 @@ class Dashboard extends Page {
 			<Layout>
 				<div>
 					<h1>
-						Welcome {this.state.userData.username} your score is 0
+						Welcome {this.state.userData.username} your score is {this.state.score}
 					</h1>
 					<button
 						className={classes.loginBtn}
 						onClick={this.gotoMathGame}
 					>
 						Play math game
+					</button>
+					<button
+						className={classes.loginBtn}
+						onClick={this.gotoScoreboards}
+					>
+						Scoreboards
 					</button>
 					<button
 						className={classes.loginBtn}
@@ -77,6 +83,9 @@ class Dashboard extends Page {
 						Delete Account
 					</button>
 				</div>
+				<br />
+				<br />
+				<br />
 			</Layout>
 		);
 	}

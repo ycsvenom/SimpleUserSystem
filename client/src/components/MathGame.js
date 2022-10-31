@@ -7,16 +7,13 @@ const operators = '+-*';
 
 class MathGame extends Page {
 	constructor(props) {
-		super(props);
+		super(props, true);
 		this.state = {
 			...this.state,
 			score: 0,
 			result: 0,
 			equation: ''
 		};
-		if (!this.state.isLoggedIn) {
-			window.location.href = '/login';
-		}
 		this.generateEquation();
 	}
 
@@ -44,30 +41,31 @@ class MathGame extends Page {
 		event.preventDefault();
 		const { username, } = this.state.userData;
 		const { equation, result, token } = this.state;
-		if (eval(equation) == parseInt(result)) {
-			this.generateEquation();
-			this.state.score += 5;
-		}
+		const isRightResult = eval(equation) == parseInt(result);
+		this.state.score += isRightResult ? 1 : -1;
+		this.generateEquation();
 		this.setState({
 			score: this.state.score,
 			result: 0
 		});
-		axios(
-			'/api/math-game-score',
-			{
-				method: 'PUT',
-				headers: {
-					'authorization': `Bearer ${token}`,
-				},
-				data: {
-					username: username,
-					score: this.state.score,
-				}
-			})
-			.then(response => { })
-			.catch(error => {
-				console.log(error);
-			})
+		if (isRightResult) {
+			axios(
+				'/api/math-game-score',
+				{
+					method: 'PUT',
+					headers: {
+						'authorization': `Bearer ${token}`,
+					},
+					data: {
+						username: username,
+						score: this.state.score,
+					}
+				})
+				.then(response => { })
+				.catch(error => {
+					console.log(error);
+				})
+		}
 	};
 
 	render() {
@@ -75,7 +73,7 @@ class MathGame extends Page {
 			<Layout>
 				<div>
 					<h1>
-						your Score is {this.state.score}
+						Your Score is {this.state.score}
 					</h1>
 					<h2>
 						{this.state.equation} = ?

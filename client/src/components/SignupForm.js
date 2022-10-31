@@ -9,7 +9,7 @@ import JsonResponseCodes from './JsonResponseCodes';
 
 class SignupForm extends Page {
 	constructor(props) {
-		super(props);
+		super(props, false);
 		this.state = {
 			...this.state,
 			fname: '',
@@ -17,9 +17,6 @@ class SignupForm extends Page {
 			username: '',
 			email: '',
 			password: '',
-		}
-		if (this.state.isLoggedIn) {
-			window.location.href = '/dashboard';
 		}
 	}
 

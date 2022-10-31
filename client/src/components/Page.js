@@ -1,7 +1,7 @@
 import { Component } from "react";
 
 class Page extends Component {
-	constructor(props) {
+	constructor(props, isLogInRequired) {
 		super(props);
 		let localState;
 		try {
@@ -17,6 +17,10 @@ class Page extends Component {
 			token: token,
 			score: score
 		}
+		if (isLogInRequired && !this.state.isLoggedIn)
+			window.location.href = '/login';
+		if (!isLogInRequired && this.state.isLoggedIn)
+			window.location.href = '/dashboard';
 	}
 }
 

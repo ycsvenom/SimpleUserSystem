@@ -7,15 +7,19 @@
 }
 
 table {
-	border: 2px solid forestgreen;
 	width: 800px;
 	height: 200px;
 }
 
 th {
-	border-bottom: 1px solid black;
+	border: 2px solid forestgreen;
 }
 
 td {
 	text-align: center;
+	border: 2px solid forestgreen;
+}
+
+.my-username {
+	color: black;
 }

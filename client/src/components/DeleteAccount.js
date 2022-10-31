@@ -9,11 +9,8 @@ import Page from "./Page";
 
 class DeleteAccount extends Page {
 	constructor(props) {
-		super(props);
+		super(props, true);
 		this.state['password'] = '';
-		if (!this.state.isLoggedIn) {
-			window.location.href = '/login';
-		}
 	}
 
 	handleUserInput = (e) => {
