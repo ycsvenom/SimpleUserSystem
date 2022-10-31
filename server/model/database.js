@@ -15,6 +15,11 @@ const pool = mysql.createPool(config);
 
 class QueryAPI {
 	#finalQuery;
+	static OrderBy = {
+		ASC: 'ASC',
+		DESC: 'DESC',
+	}
+
 	constructor() {
 		this.#finalQuery = ''
 	};
@@ -79,14 +84,29 @@ class QueryAPI {
 		clauseValues.forEach(val => {
 			clause = clause.replace(`?`, isNaN(val) ? `"${val}"` : `${val}`);
 		});
-		this.#finalQuery = `UPDATE ${table} SET ${genClause} WHERE ${clause};`;
+		this.#finalQuery = `UPDATE ${table} SET ${genClause} WHERE ${clause}`;
 		return this.#createFeedback();
 	}
 
 	Insert(keyvalue, table) {
 		let attributes = Object.keys(keyvalue).map(attr => `\`${attr}\``).join(', ');
-		let attrsValues = Object.values(keyvalue).map(val => isNaN(val) ? `"${val}"` : `${val}`).join(', ')
+		let attrsValues = Object.values(keyvalue).map(val => isNaN(val) ? `"${val}"` : `${val}`).join(', ');
 		this.#finalQuery = `INSERT INTO \`${table}\` (${attributes}) VALUES (${attrsValues})`;
+		return this.#createFeedback();
+	}
+
+	Limit(n) {
+		this.#finalQuery += ` LIMIT ${n}`;
+		return this.#createFeedback();
+	}
+
+	// keyvalue pair of columns and ordering which will mixed inside
+	OrderBy(keyvalue) {
+		let genOrder = Object.keys(keyvalue).map(key => `\`${key}\` ?`).join(', ');
+		Object.values(keyvalue).forEach(val => {
+			genOrder = genOrder.replace(`?`, `${val}`);
+		});
+		this.#finalQuery += ` ORDER BY ${genOrder}`;
 		return this.#createFeedback();
 	}
 

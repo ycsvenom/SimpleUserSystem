@@ -4,13 +4,7 @@ import usernameIcon from "../assets/akar-icons_person.svg";
 import passwordIcon from "../assets/carbon_password.svg";
 import Input from "./Input";
 import axios from 'axios'
-
-const code = {
-	ok: 200,
-	badRequest: 400,
-	unauthorized: 401,
-	internalServerError: 500,
-}
+import JsonResponseCodes from './JsonResponseCodes';
 
 class LoginForm extends Component {
 	constructor(props) {
@@ -51,7 +45,7 @@ class LoginForm extends Component {
 				password: password,
 			}).then(response => {
 				const data = response.data;
-				if (response.status === code.ok) {
+				if (response.status === JsonResponseCodes.ok) {
 					let localState = {
 						isLoggedIn: true,
 						userData: data.data,

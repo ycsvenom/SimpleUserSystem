@@ -4,13 +4,8 @@ import usernameIcon from "../assets/akar-icons_person.svg";
 import passwordIcon from "../assets/carbon_password.svg";
 import axios from 'axios'
 import Input from "./Input";
+import JsonResponseCodes from './JsonResponseCodes';
 
-const code = {
-	ok: 200,
-	badRequest: 400,
-	unauthorized: 401,
-	internalServerError: 500,
-}
 
 class SignupForm extends Component {
 	constructor(props) {
@@ -56,7 +51,7 @@ class SignupForm extends Component {
 				email: email,
 				password: password,
 			}).then(response => {
-				if (response.status === code.ok) {
+				if (response.status === JsonResponseCodes.ok) {
 					let localState = {
 						isLoggedIn: false,
 						userData: {}

@@ -4,13 +4,7 @@ import passwordIcon from "../assets/carbon_password.svg";
 import Layout from "./Layout";
 import Input from "./Input";
 import axios from "axios";
-
-const code = {
-	ok: 200,
-	badRequest: 400,
-	unauthorized: 401,
-	internalServerError: 500,
-}
+import JsonResponseCodes from './JsonResponseCodes';
 
 
 class DeleteAccount extends Component {
@@ -57,7 +51,7 @@ class DeleteAccount extends Component {
 				}
 			}
 		).then(response => {
-			if (response.status === code.ok) {
+			if (response.status === JsonResponseCodes.ok) {
 				window.localStorage.removeItem('state');
 				window.location.href = '/signup';
 			}

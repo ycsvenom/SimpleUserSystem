@@ -4,8 +4,17 @@ module.exports = function (app) {
 	app.use(
 		'/api',
 		createProxyMiddleware({
-			target: 'http://localhost:3001',
 			changeOrigin: true,
+			cookieDomainRewrite: "localhost",
+			secure: false,
+			target: "https://localhost:3001",
+			headers: {
+				host: "localhost:3001",
+				origin: null,
+			},
+			onProxyReq: function (proxyReq, req, res) {
+				proxyReq.setHeader("accept-encoding", "identity");
+			},
 		})
 	);
 };

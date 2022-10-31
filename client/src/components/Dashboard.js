@@ -1,24 +1,12 @@
-import { Component } from "react";
 import classes from "./LoginForm.module.scss";
 import Layout from "./Layout";
+import JsonResponseCodes from './JsonResponseCodes';
+import Page from "./Page";
+import axios from 'axios';
 
-
-class Dashboard extends Component {
+class Dashboard extends Page {
 	constructor(props) {
-		super(props);
-		let localState;
-		try {
-			let localStorage = window.localStorage.getItem('state') || '{ isLoggedIn: false, userData: {} }';
-			localState = JSON.parse(localStorage);
-		} catch (error) {
-			localState = { isLoggedIn: false, userData: {} }
-		}
-		const { isLoggedIn, userData, token } = localState;
-		this.state = {
-			isLoggedIn: isLoggedIn,
-			userData: userData,
-			token: token
-		}
+		super(props)
 		if (!this.state.isLoggedIn) {
 			window.location.href = '/login';
 		}
@@ -35,6 +23,32 @@ class Dashboard extends Component {
 
 	deleteAccount = () => {
 		window.location.href = './settings/delete-account';
+	}
+
+	componentDidMount() {
+		const { username } = this.state.userData;
+		axios.get(
+			'/api/get-scores',
+			{
+				params: {
+					username: username,
+				}
+			}).then(response => {
+				const data = response.data;
+				if (response.status === JsonResponseCodes.ok) {
+					this.setState({ score: data[0].score });
+					let localState = {
+						isLoggedIn: this.state.isLoggedIn,
+						userData: this.state.userData,
+						token: this.state.token,
+						score: this.state.score
+					}
+					window.localStorage.setItem('state', JSON.stringify(localState));
+					window.location.href = '/dashboard';
+				}
+			}).catch(error => {
+				console.log(error);
+			})
 	}
 
 	render() {

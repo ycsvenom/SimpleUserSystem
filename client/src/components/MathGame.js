@@ -3,13 +3,6 @@ import classes from "./LoginForm.module.scss";
 import Layout from "./Layout";
 import axios from 'axios'
 
-const code = {
-	ok: 200,
-	badRequest: 400,
-	unauthorized: 401,
-	internalServerError: 500,
-}
-
 const operators = '+-*';
 
 class MathGame extends Component {
@@ -69,11 +62,12 @@ class MathGame extends Component {
 			score: this.state.score,
 			result: 0
 		});
-		axios.put(
+		axios(
 			'/api/math-game-score',
 			{
+				method: 'PUT',
 				headers: {
-					'authorization': `Bearer ${token}`
+					'authorization': `Bearer ${token}`,
 				},
 				data: {
 					username: username,
