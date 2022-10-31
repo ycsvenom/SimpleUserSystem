@@ -2,8 +2,8 @@ import { Component } from "react";
 import classes from "./LoginForm.module.scss";
 import usernameIcon from "../assets/akar-icons_person.svg";
 import passwordIcon from "../assets/carbon_password.svg";
-import axios from 'axios'
 import Input from "./Input";
+import axios from 'axios'
 
 const code = {
 	ok: 200,

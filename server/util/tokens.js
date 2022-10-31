@@ -20,7 +20,8 @@ class JsonWebTokensHolder {
 			return new Promise((res, rej) => {
 				jwt.verify(token, secretKey, (err, authData) => err ? rej(undefined) : res(authData));
 			});
-		}
+		} else
+			return undefined;
 	}
 
 	static verifyToken = (req, res, next) => {

@@ -6,6 +6,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import DeleteAccount from './components/DeleteAccount';
+import MathGame from './components/MathGame';
 
 export default function App() {
 	return (
@@ -14,6 +15,7 @@ export default function App() {
 				<Route exact={true} path="/login" element={<Login />} />
 				<Route exact={true} path="/signup" element={<Signup />} />
 				<Route exact={true} path="/dashboard" element={<Dashboard />} />
+				<Route exact={true} path="/math-game" element={<MathGame />} />
 				<Route exact={true} path="/settings/delete-account" element={<DeleteAccount />} />
 				{/* <Route index element={<Login />} />
 					<Route path="*" element={<NoPage />} /> */}

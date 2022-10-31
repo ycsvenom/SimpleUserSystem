@@ -13,10 +13,11 @@ class Dashboard extends Component {
 		} catch (error) {
 			localState = { isLoggedIn: false, userData: {} }
 		}
-		const { isLoggedIn, userData } = localState;
+		const { isLoggedIn, userData, token } = localState;
 		this.state = {
 			isLoggedIn: isLoggedIn,
-			userData: userData
+			userData: userData,
+			token: token
 		}
 		if (!this.state.isLoggedIn) {
 			window.location.href = '/login';
@@ -28,6 +29,10 @@ class Dashboard extends Component {
 		window.location.href = './login';
 	}
 
+	gotoMathGame = () => {
+		window.location.href = './math-game';
+	}
+
 	deleteAccount = () => {
 		window.location.href = './settings/delete-account';
 	}
@@ -37,8 +42,14 @@ class Dashboard extends Component {
 			<Layout>
 				<div>
 					<h1>
-						Welcome {this.state.userData.username}
+						Welcome {this.state.userData.username} your score is 0
 					</h1>
+					<button
+						className={classes.loginBtn}
+						onClick={this.gotoMathGame}
+					>
+						Play math game
+					</button>
 					<button
 						className={classes.loginBtn}
 						onClick={this.logOut}

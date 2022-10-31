@@ -1,0 +1,125 @@
+import { Component } from "react";
+import classes from "./LoginForm.module.scss";
+import Layout from "./Layout";
+import axios from 'axios'
+
+const code = {
+	ok: 200,
+	badRequest: 400,
+	unauthorized: 401,
+	internalServerError: 500,
+}
+
+const operators = '+-*';
+
+class MathGame extends Component {
+	constructor(props) {
+		super(props);
+		let localState;
+		try {
+			let localStorage = window.localStorage.getItem('state') || '{ isLoggedIn: false, userData: {} }';
+			localState = JSON.parse(localStorage);
+		} catch (error) {
+			localState = { isLoggedIn: false, userData: {} }
+		}
+		const { isLoggedIn, userData, token } = localState;
+		this.state = {
+			isLoggedIn: isLoggedIn,
+			userData: userData,
+			token: token,
+			score: 0,
+			result: 0,
+			equation: ''
+		}
+		if (!this.state.isLoggedIn) {
+			window.location.href = '/login';
+		}
+		this.generateEquation();
+	}
+
+	generateEquation = () => {
+		let level = Math.pow(10, Math.floor(this.state.score / 50) + 1);
+		let operand1 = Math.floor(Math.random() * level) + 1;
+		let operand2 = Math.floor(Math.random() * level) + 1;
+		if (operand2 > operand1)
+			[operand1, operand2] = [operand2, operand1];
+		let operator = operators[Math.floor(Math.random() * operators.length)];
+		this.state.equation = `${operand1} ${operator} ${operand2}`;
+	}
+
+	handleUserInput = (e) => {
+		const name = e.target.name;
+		let value = e.target.value;
+		value = value.replace(/\D/g, '');
+		if (value === '')
+			value = 0;
+		value = parseInt(value);
+		this.setState({ [name]: value });
+	}
+
+	submitHandler = (event) => {
+		event.preventDefault();
+		const { username, } = this.state.userData;
+		const { equation, result, token } = this.state;
+		if (eval(equation) == parseInt(result)) {
+			this.generateEquation();
+			this.state.score += 5;
+		}
+		this.setState({
+			score: this.state.score,
+			result: 0
+		});
+		axios.put(
+			'/api/math-game-score',
+			{
+				headers: {
+					'authorization': `Bearer ${token}`
+				},
+				data: {
+					username: username,
+					score: this.state.score,
+				}
+			})
+			.then(response => { })
+			.catch(error => {
+				console.log(error);
+			})
+	};
+
+	render() {
+		return (
+			<Layout>
+				<div>
+					<h1>
+						your Score is {this.state.score}
+					</h1>
+					<h2>
+						{this.state.equation} = ?
+					</h2>
+					<form onSubmit={this.submitHandler}>
+						<input
+							className={classes.input}
+							type="text"
+							id="result"
+							name="result"
+							autoComplete="off"
+							placeholder="result"
+							value={this.state.result}
+							onChange={this.handleUserInput}
+						></input>
+						<button
+							className={classes.loginBtn}
+							onClick={this.gotoMathGame}
+						>
+							Answer
+						</button>
+					</form>
+				</div>
+				<br />
+				<a href='/dashboard'>Return to dashboard</a>
+			</Layout>
+		);
+	}
+}
+
+export default MathGame;

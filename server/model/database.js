@@ -30,7 +30,7 @@ class QueryAPI {
 				callback(result[0])
 			}).catch(err => {
 				fallback(err)
-			});
+			})
 	}
 
 	#setFinalQuery(query) {
@@ -68,6 +68,18 @@ class QueryAPI {
 			clause = clause.replace(`?`, isNaN(val) ? `"${val}"` : `${val}`);
 		});
 		this.#finalQuery = `DELETE FROM ${table} WHERE ${clause}`;
+		return this.#createFeedback();
+	}
+
+	Update(keyvalue, clause, clauseValues, table) {
+		let genClause = Object.keys(keyvalue).map(key => `\`${key}\` = ?`).join(', ');
+		Object.values(keyvalue).forEach(val => {
+			genClause = genClause.replace(`?`, isNaN(val) ? `"${val}"` : `${val}`);
+		});
+		clauseValues.forEach(val => {
+			clause = clause.replace(`?`, isNaN(val) ? `"${val}"` : `${val}`);
+		});
+		this.#finalQuery = `UPDATE ${table} SET ${genClause} WHERE ${clause};`;
 		return this.#createFeedback();
 	}
 

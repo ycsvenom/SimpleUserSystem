@@ -20,6 +20,7 @@ app.post(
 		const { hashedPassword, salt } = getHashedPassword(password);
 		let id = generateId(username, email, hashedPassword, salt);
 		let query = new QueryAPI();
+		let hasCreatedAccount = false;
 		await query.Insert(
 			{
 				id: id,
@@ -39,6 +40,7 @@ app.post(
 							{},
 							JsonResponse.code.ok
 						);
+						hasCreatedAccount = true;
 					}
 					else {
 						jsonResponse.setError(
@@ -54,6 +56,23 @@ app.post(
 					);
 				}
 			);
+		if (hasCreatedAccount)
+			await query.Insert(
+				{
+					username: username,
+					score: 0,
+				},
+				'scoreboard'
+			)
+				.Execute(
+					async (results) => { },
+					async (error) => {
+						jsonResponse.setError(
+							"Couldn't register score",
+							JsonResponse.code.internalServerError
+						);
+					}
+				)
 		res.status(jsonResponse.getCode()).json(jsonResponse.formJson());
 	});
 
