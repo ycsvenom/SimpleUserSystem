@@ -1,29 +1,16 @@
-import { Component } from "react";
 import classes from "./LoginForm.module.scss";
 import passwordIcon from "../assets/carbon_password.svg";
 import Layout from "./Layout";
 import Input from "./Input";
 import axios from "axios";
 import JsonResponseCodes from './JsonResponseCodes';
+import Page from "./Page";
 
 
-class DeleteAccount extends Component {
+class DeleteAccount extends Page {
 	constructor(props) {
 		super(props);
-		let localState;
-		try {
-			let localStorage = window.localStorage.getItem('state') || '{ isLoggedIn: false, userData: {} }';
-			localState = JSON.parse(localStorage);
-		} catch (error) {
-			localState = { isLoggedIn: false, userData: {} }
-		}
-		const { isLoggedIn, userData, token } = localState;
-		this.state = {
-			password: '',
-			isLoggedIn: isLoggedIn,
-			userData: userData,
-			token: token
-		}
+		this.state['password'] = '';
 		if (!this.state.isLoggedIn) {
 			window.location.href = '/login';
 		}

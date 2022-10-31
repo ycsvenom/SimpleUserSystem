@@ -7,6 +7,7 @@ import Signup from './components/Signup';
 import Dashboard from './components/Dashboard';
 import DeleteAccount from './components/DeleteAccount';
 import MathGame from './components/MathGame';
+import Scoreboard from './components/Scoreboard';
 
 export default function App() {
 	return (
@@ -17,8 +18,9 @@ export default function App() {
 				<Route exact={true} path="/dashboard" element={<Dashboard />} />
 				<Route exact={true} path="/math-game" element={<MathGame />} />
 				<Route exact={true} path="/settings/delete-account" element={<DeleteAccount />} />
+				<Route exact={true} path="/scoreboard" element={<Scoreboard />} />
 				{/* <Route index element={<Login />} />
-					<Route path="*" element={<NoPage />} /> */}
+					<Route path="*" element={<NoPage />} /> */}http://localhost:3000/api/get-scores
 			</Routes>
 		</BrowserRouter>
 	);

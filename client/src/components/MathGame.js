@@ -1,29 +1,19 @@
-import { Component } from "react";
 import classes from "./LoginForm.module.scss";
 import Layout from "./Layout";
 import axios from 'axios'
+import Page from "./Page";
 
 const operators = '+-*';
 
-class MathGame extends Component {
+class MathGame extends Page {
 	constructor(props) {
 		super(props);
-		let localState;
-		try {
-			let localStorage = window.localStorage.getItem('state') || '{ isLoggedIn: false, userData: {} }';
-			localState = JSON.parse(localStorage);
-		} catch (error) {
-			localState = { isLoggedIn: false, userData: {} }
-		}
-		const { isLoggedIn, userData, token } = localState;
 		this.state = {
-			isLoggedIn: isLoggedIn,
-			userData: userData,
-			token: token,
+			...this.state,
 			score: 0,
 			result: 0,
 			equation: ''
-		}
+		};
 		if (!this.state.isLoggedIn) {
 			window.location.href = '/login';
 		}

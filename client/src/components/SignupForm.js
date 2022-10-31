@@ -1,32 +1,22 @@
-import React, { Component } from "react";
 import classes from "./LoginForm.module.scss";
 import usernameIcon from "../assets/akar-icons_person.svg";
 import passwordIcon from "../assets/carbon_password.svg";
 import axios from 'axios'
 import Input from "./Input";
+import Page from "./Page";
 import JsonResponseCodes from './JsonResponseCodes';
 
 
-class SignupForm extends Component {
+class SignupForm extends Page {
 	constructor(props) {
 		super(props);
-		let localState;
-		try {
-			let localStorage = window.localStorage.getItem('state') || '{ isLoggedIn: false, userData: {} }';
-			localState = JSON.parse(localStorage);
-		} catch (error) {
-			localState = { isLoggedIn: false, userData: {} }
-		}
-		const { isLoggedIn, userData, token } = localState;
 		this.state = {
+			...this.state,
 			fname: '',
 			lname: '',
 			username: '',
 			email: '',
 			password: '',
-			isLoggedIn: isLoggedIn,
-			userData: userData,
-			token: token
 		}
 		if (this.state.isLoggedIn) {
 			window.location.href = '/dashboard';
