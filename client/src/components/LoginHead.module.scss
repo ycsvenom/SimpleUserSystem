@@ -1,0 +1,9 @@
+@import "../mixins";
+@import "../variables";
+
+.loginTitle {
+	@include display-flex();
+	@include justify-content-center();
+	font-size: 48px;
+	margin-bottom: $main-margin;
+}
