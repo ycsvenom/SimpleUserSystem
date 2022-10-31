@@ -6,7 +6,7 @@ The Backend was written using [`NodeJS`](https://nodejs.org/en/) and the Fronten
 the Server is working as API which offers the following methods[^1]:
 
 | Method          | Description       |
-|:-----------------------:|:-----------------:|
+|:----------------------------:|:-----------------:|
 | `/signup`        | Require `username`,`password`,`fname`,`lname` and `email` and return empty `data` Array when success  |
 |  `/login`       | Require `username` and `password` and returns user data with `token` but without the `password`           |
 | `/delete-account`   | Require `username`, `password` and `token` and returns empty array if success     |
